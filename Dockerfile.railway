@@ -1,0 +1,9 @@
+FROM node:24-bookworm-slim
+RUN apt-get update && apt-get install -y --no-install-recommends python3 git ca-certificates && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+COPY . .
+RUN npm --prefix webapp ci --no-audit --no-fund && npm --prefix webapp run build
+ENV NODE_ENV=production JOBS_LOCAL_ONLY=1 NEXT_TELEMETRY_DISABLED=1
+RUN mkdir -p /app/data
+EXPOSE 3001
+CMD ["sh", "deploy/start.sh"]

@@ -130,7 +130,7 @@ export async function getMode(): Promise<DataMode> {
 const localCache: Record<string, unknown[]> = {};
 
 function loadLocal<T>(name: string): T[] {
-  if (localCache[name]) return localCache[name] as T[];
+  if (name !== "devops_jobs" && localCache[name]) return localCache[name] as T[];
   let items: unknown[] = [];
   try {
     const raw = fs.readFileSync(path.join(DATA_DIR, `${name}.json`), "utf8");
